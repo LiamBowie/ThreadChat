@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shittest Chat App Eva</title>
+    <style media="screen">
+      body {
+        font-family: Roboto, Arial, sans-serif;
+        background: #ECEFF1;
+        color: rgba(0,0,0,0.87);
+      }
+
+      #messageInput{
+        position: absolute;
+        bottom: 0;
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1 id="bigOne"></h1>
+
+
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyC0Zz_zwcADo45N9KbYv0kIqDM0IYAc47U",
+        authDomain: "threadchat-24bfc.firebaseapp.com",
+        databaseURL: "https://threadchat-24bfc.firebaseio.com",
+        storageBucket: "threadchat-24bfc.appspot.com",
+      };
+      firebase.initializeApp(config);
+
+      var dbTitle = firebase.database().ref().child('title');
+      var dbMessages = firebase.database().ref().child('messages');
+
+      var bigOne = document.getElementById("bigOne");
+      var message = document.getElementById("messageText");
+
+      dbTitle.on('value', snap => bigOne.innerText = snap.val());
+      dbMessages.on('value', snap => message.innerText = snap.val());
+
+      function addMessage(){
+        if(message.innerText != ""){
+          dbMessages.push(message.innerText);
+          message.innerText = "";
+        }
+      }
+
+    </script>
+
+    <p id="displayMessage"></p>
+
+    <div id="messageInput">
+      message: <input type="text" name="message" id="messageText">
+      <button onclick="addMessage()">Submit</button>
+    </div>
+  </body>
+</html>
